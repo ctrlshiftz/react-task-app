@@ -1,19 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const AddTask = () => {
+const AddTask = ({ onAdd }) => {
+	const [ text, setText ] = useState('');
+	const [ day, setDay ] = useState('');
+	const [ reminder, setReminder ] = useState(false);
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+		if (!text) {
+			alert('لطفا یک وظیفه وارد کنید');
+			return;
+		}
+		onAdd({ text, day, reminder });
+
+		setText('');
+		setDay('');
+		setReminder(false);
+	};
+
 	return (
-		<form className="add-form">
+		<form className="add-form" onSubmit={onSubmit}>
 			<div className="form-control">
 				<label>وظیفه</label>
-				<input type="text" placeholder="اضافه کردن وظیفه" />
+				<input
+					value={text}
+					onChange={(e) => setText(e.target.value)}
+					type="text"
+					placeholder="اضافه کردن وظیفه"
+				/>
 			</div>
 			<div className="form-control">
 				<label>روز</label>
-				<input type="text" placeholder="اضافه کردن روز" />
+				<input value={day} onChange={(e) => setDay(e.target.value)} type="text" placeholder="اضافه کردن روز" />
 			</div>
 			<div className="form-control form-control-check">
 				<label>اضافه کردن یادآور</label>
-				<input type="checkbox" />
+				<input
+					checked={reminder}
+					value={reminder}
+					onChange={(e) => setReminder(e.currentTarget.checked)}
+					type="checkbox"
+				/>
 			</div>
 
 			<input type="submit" value="ذخیره کردن وظیفه" className="btn btn-block" />
